@@ -14,7 +14,7 @@ object "SudokuYulStor" {
                 case 0x0e3d9299 /* "transfer(address,uint256)" */ { // getLib
                     returnStuff(get_lib())
                 }
-                case 0xcf608056 /* "fun_isValidBlocks(uint256[9][9])" */ {
+                case 0xcf608056 /* fun_isValidBlocks(uint256[9][9]) */ {
                     fun_isValidBlocks()                
                     returnTrue()
                 }
