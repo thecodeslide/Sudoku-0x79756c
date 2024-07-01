@@ -1,3 +1,3 @@
 # Sudoku-in-Yul
 
-valid sudoku checker
+valid sudoku checker. work in progress
