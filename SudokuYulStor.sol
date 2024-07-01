@@ -1,4 +1,3 @@
-```yul
 object "SudokuYulStor" {
     code {
         datacopy(0, dataoffset("runtime"), datasize("runtime"))
@@ -185,4 +184,3 @@ object "SudokuYulStor" {
         } //endcode
     }
 }
-```
