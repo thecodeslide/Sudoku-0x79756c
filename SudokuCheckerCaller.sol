@@ -11,9 +11,9 @@ interface ISudokuYulBuildSpace {
     function set_lib(address addr) external returns (uint);
 }
 contract CallSudokuYulExStor {
-    ISudokuYulExStor public target;
+    ISudokuYulBuildSpace public target;
 
-    constructor(ISudokuYulExStor _target) {
+    constructor(ISudokuYulBuildSpace _target) {
         target = _target;
     }
     
