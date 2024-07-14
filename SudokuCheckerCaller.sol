@@ -7,7 +7,7 @@ interface ISudokuYulBuildSpace {
     function fun_isValidRows(uint256[9][9] calldata board) external returns (uint256);
     function fun_isValidCols(uint256[9][9] calldata board) external returns (uint256);
     function fun_isValid(uint256[9][9] calldata board) external returns (uint256);
-    function get_lib() external returns (address);
+    function getter_fun_getLib() external returns (address);
     function set_lib(address addr) external returns (uint);
 }
 contract CallSudokuYulExStor {
@@ -34,7 +34,7 @@ contract CallSudokuYulExStor {
     }
 
     function getLibAddr() public  returns (address) {
-        return target.get_lib();
+        return target.getter_fun_getLib();
     }
 
     function setLib(address addr) external returns (uint) {
