@@ -5,6 +5,7 @@ object "Sudoku_Yul_Ex_Stor" {
 
         let _1 := copy_arguments_for_constructor_SudokuYulExStor()
         constructor_SudokuYulExStor(_1)
+ 
         datacopy(0, dataoffset("Sudoku_Yul_Ex_Stor_deployed"), datasize("Sudoku_Yul_Ex_Stor_deployed"))
         return(0, datasize("Sudoku_Yul_Ex_Stor_deployed"))
 
@@ -39,6 +40,7 @@ object "Sudoku_Yul_Ex_Stor" {
         function constructor_SudokuYulExStor(libAddress) {
             let expr_11 := libAddress
             update_storage_value_offset_0t_lib$_LibrarySet_$905(0x00, expr_11)
+
         }
 
         function copy_arguments_for_constructor_SudokuYulExStor() -> ret_param_0 {
@@ -74,6 +76,8 @@ object "Sudoku_Yul_Ex_Stor" {
             mstore(64, 128)
 
             if iszero(lt(calldatasize(), 4)) {
+                // revert_library_size_zero(extcodesize(getter_fun_getLib()))
+                
                 let selector := shift_right_224_unsigned(calldataload(0))
                 switch selector
                 case 0x4ca6558a /* get_lib() */ { // getLib
@@ -82,7 +86,7 @@ object "Sudoku_Yul_Ex_Stor" {
                 }
                 case 0xf670d6d4 /* "fun_isValid(uint256[9][9])" */ {
                     abi_decode_tuple(4, calldatasize())
-                    let cellValue //
+                    let cellValue // 
                     let INDEX := 9
                     let sudokuBoard := 0x04
                     fun_isValid(cellValue, INDEX, sudokuBoard)
@@ -141,13 +145,13 @@ object "Sudoku_Yul_Ex_Stor" {
                 }
             }
             
-            function abi_encode_t_stringliteral__fromStack(pos, value) {
+            function abi_encode_t_strcpy__fromStack(pos, value) {
                 mstore(pos, value)
             }
 
             function abi_encode_errormessage__fromStack(headStart , value) -> tail { 
                 tail := add(headStart, 32)
-                abi_encode_t_stringliteral__fromStack(add(headStart, 0),  value)
+                abi_encode_t_strcpy__fromStack(add(headStart, 0),  value)
             }
 
             function allocate_memory(size) -> mem {
@@ -158,8 +162,8 @@ object "Sudoku_Yul_Ex_Stor" {
                 mstore(0x40, mallocMem)
             }
 
-            // memory as storage
             function fun_isValid(cellValue, INDEX, sudokuBoard) {
+                revert_library_size_zero(extcodesize(getter_fun_getLib()))
                 let _1 := allocate_memory(0x140)
                 let rowList := _1
                 mstore(rowList, add(_1, 0x20))
@@ -176,16 +180,9 @@ object "Sudoku_Yul_Ex_Stor" {
                     for {let c := 0 } lt(c, 9) { c := add(c, 1)} {
                         cellValue := calldataload(add(add(mul(0x120, r), sudokuBoard), mul(0x20, c)))
 
+
                         if gt(cellValue, 9){
-                            let memPos := allocate_memory(0)
-                            let offset := 0x04
-                            let argSize := 0x20
-                            let _41 := 0xf
-                            let _42 := "number too high" // 0x6e756d62657220746f6f2068696768
-                            let _43 := abi_encode_errormessage__fromStack(add(memPos, offset), argSize)
-                            let _44 := abi_encode_errormessage__fromStack(_43, _41)
-                            
-                            require_error(memPos, _44, add(_44, argSize), _42)
+                            abi_encode_tuple_error(0xf, "number too high")
                         }
 
                         if gt(cellValue, 0) {
@@ -194,7 +191,8 @@ object "Sudoku_Yul_Ex_Stor" {
                                 let offset := 0x04
                                 let errCode := 0x32
                                 let tail := add(0, offset)
-                                panic_error_0x4e487b71(0, tail, add(tail, 0x20), errCode)
+
+                                panic_error_4e487b71(0, tail, add(tail, 0x20), errCode)
                             }
                             let result := mload(add(mul(0x20, sub(cellValue, 1)), mload(rowList)))
                             let shifted := shl(mul(31,8),cellValue)
@@ -215,15 +213,7 @@ object "Sudoku_Yul_Ex_Stor" {
                         cellValue := calldataload(add(add(mul(0x120, c), sudokuBoard), mul(0x20, r))) // cols
 
                         if gt(cellValue, 9){
-                            let memPos := allocate_memory(0)
-                            let offset := 0x04
-                            let argSize := 0x20
-                            let _36 := 0xf
-                            let _37 := "number too high" // 0x6e756d62657220746f6f2068696768
-                            let _33 := abi_encode_errormessage__fromStack(add(memPos, offset), argSize)
-                            let _34 := abi_encode_errormessage__fromStack(_33, _36)
-         
-                            require_error(memPos, _34, add(_34, argSize), _37)
+                            abi_encode_tuple_error(0xf, "number too high")
                         }
 
                         if gt(cellValue, 0) {
@@ -231,7 +221,8 @@ object "Sudoku_Yul_Ex_Stor" {
                                 let offset := 0x04
                                 let errCode := 0x32
                                 let tail := add(0, offset)
-                                panic_error_0x4e487b71(allocate_memory(0), tail, add(tail, 0x20), errCode)
+
+                                panic_error_4e487b71(allocate_memory(0), tail, add(tail, 0x20), errCode)
                             }
 
                             let result := mload(add(mul(0x20, sub(cellValue, 1)), mload(colList)))
@@ -256,12 +247,7 @@ object "Sudoku_Yul_Ex_Stor" {
                         cellValue := calldataload(add(add(mul(0x120, i), sudokuBoard), mul(0x20, j))) // blocks
 
                         if gt(cellValue, 9){
-                            let mem := mload(0x40) 
-                            mstore(mem, hex"08c379a0")
-                            mstore(add(mem, 0x4), 0x20)
-                            mstore(add(mem, 0x24), 0xf)
-                            mstore(add(mem, 0x44), "number too high")
-                            revert(mem, 0x64)
+                            abi_encode_tuple_error(0xf, "number too high")
                         }
 
                         if gt(cellValue, 0) {
@@ -269,7 +255,8 @@ object "Sudoku_Yul_Ex_Stor" {
                                 let offset := 0x04
                                 let errCode := 0x32
                                 let tail := add(0, offset)
-                                panic_error_0x4e487b71(0, tail, add(tail, 0x20), errCode)
+                      
+                                panic_error_4e487b71(0, tail, add(tail, 0x20), errCode)
                             }
                             let result := mload(add(mul(0x20, sub(cellValue, 1)), mload(blockList)))
                             let shifted := shl(mul(31,8),cellValue)
@@ -303,7 +290,8 @@ object "Sudoku_Yul_Ex_Stor" {
                                 let offset := 0x04
                                 let errCode := 0x01
                                 let tail := add(_5, offset)
-                                panic_error_0x4e487b71(_5, tail, add(tail, 0x20),  errCode)
+
+                                panic_error_4e487b71(_5, tail, add(tail, 0x20),  errCode)
                             }
                         }
                         default {    }
@@ -319,7 +307,8 @@ object "Sudoku_Yul_Ex_Stor" {
                                 let offset := 0x04
                                 let errCode := 0x01
                                 let tail := add(_5, offset)
-                                panic_error_0x4e487b71(_5, tail, add(tail, 0x20), errCode)
+                         
+                                panic_error_4e487b71(_5, tail, add(tail, 0x20), errCode)
                             }
                         }
 
@@ -336,7 +325,8 @@ object "Sudoku_Yul_Ex_Stor" {
                                 let offset := 0x04
                                 let errCode := 0x01
                                 let tail := add(_5, offset)
-                                panic_error_0x4e487b71(_5, tail, add(tail, 0x20), errCode)
+                          
+                                panic_error_4e487b71(_5, tail, add(tail, 0x20), errCode)
                             }
                         }
                     }
@@ -344,12 +334,12 @@ object "Sudoku_Yul_Ex_Stor" {
             }
 
             function fun_isValidBlocks()  {
+                revert_library_size_zero(extcodesize(getter_fun_getLib()))
                 let blockNumber := 0
                 let selector := hex"726a6a5f" 
                 let resetselector := hex"0e305ba9"
                 let sudokuBoard := 0x4
 
-                revert_library_size_zero(extcodesize(getter_fun_getLib()))
                 let memInsert := allocate_memory(0x84)
                 let memReset := allocate_memory(0x44)
 
@@ -365,12 +355,7 @@ object "Sudoku_Yul_Ex_Stor" {
                                 let cell := shl(248, calldataload(add(add(mul(0x120, i), sudokuBoard), mul(0x20, j))))
 
                                 if gt(cell, hex"09") {
-                                    let mem := mload(0x40)
-                                    mstore(mem, hex"08c379a0")
-                                    mstore(add(mem, 0x4), 0x20)
-                                    mstore(add(mem, 0x24), 0xf)
-                                    mstore(add(mem, 0x44), "number too high")
-                                    revert(mem, 0x64)
+                                    abi_encode_tuple_error(0xf, "number too high")
                                 }
 
                                 if gt(cell, 0){
@@ -381,8 +366,8 @@ object "Sudoku_Yul_Ex_Stor" {
                                         case 0x0 {
                                             mstore(encoded, selector)
                                             mstore(add(encoded, 0x4), seen_list_pos())
-                                            mstore(add(encoded, 0x24), blockNumber)
-                                            mstore(add(encoded, 0x44), "blocks")
+                                            mstore(add(encoded, 0x24), blockNumber) 
+                                            mstore(add(encoded, 0x44), "blocks") 
                                             mstore(add(encoded, 0x64), cell)
                                             result := delegatecall(gas(), getter_fun_getLib(), encoded, 0x84, 0, 0)
                                         }
@@ -395,12 +380,8 @@ object "Sudoku_Yul_Ex_Stor" {
                                             if gt(returndatasize(), 0) {
                                                 revert_forward_1()
                                             }
-                                            let mem := mload(0x40)
-                                            mstore(mem, hex"08c379a0")
-                                            mstore(add(mem, 0x4), 0x20)
-                                            mstore(add(mem, 0x24), 0xc)
-                                            mstore(add(mem, 0x44), "error insert")
-                                            revert(mem, 0x64)
+
+                                            abi_encode_tuple_error(0xc, "error insert")
                                         }
                                     }
                                 }
@@ -415,7 +396,7 @@ object "Sudoku_Yul_Ex_Stor" {
                             mstore(add(memPos, 0x4), seen_list_pos())
                             mstore(add(memPos, 0x24), blockNumber)
                         }
-
+                 
                         let result := delegatecall(gas(), getter_fun_getLib(), memPos, 0x44, 0, 0)
 
                         if iszero(result) {
@@ -424,12 +405,8 @@ object "Sudoku_Yul_Ex_Stor" {
                                     revert_forward_1()
                                 }
                             }
-                            let mem := mload(0x40)
-                            mstore(mem, hex"08c379a0")
-                            mstore(add(mem, 0x4), 0x20)
-                            mstore(add(mem, 0x24), 0xb)
-                            mstore(add(mem, 0x44), "error reset")
-                            revert(mem, 0x64)
+
+                            abi_encode_tuple_error(0xb, "error reset")
                         }
                     }
                 }
@@ -437,7 +414,6 @@ object "Sudoku_Yul_Ex_Stor" {
 
             function fun_isValidRows()  {
                 revert_library_size_zero(extcodesize(getter_fun_getLib()))
-     
                 let memInsert := allocate_memory(0x84)
                 let memReset := allocate_memory(0x44)
 
@@ -461,13 +437,7 @@ object "Sudoku_Yul_Ex_Stor" {
                     }
 
                     if gt(cellValue, hex"09") {
-                        let mem := mload(0x40)
-
-                        mstore(mem, shl(0xe5, 0x461bcd)) //Error string
-                        mstore(add(mem, 0x04), 0x20)
-                        mstore(add(mem, 0x24), 0x0f) 
-                        mstore(add(mem, 0x44), "number too high")
-                        revert(mem, 0x64)
+                        abi_encode_tuple_error(0x0f, "number too high")
                     }
 
                     if gt(cellValue, 0) {
@@ -485,12 +455,7 @@ object "Sudoku_Yul_Ex_Stor" {
                                 revert_forward_1()
                             }
 
-                            let mem := mload(0x40)
-                            mstore(mem, hex"08c379a0") //Error string
-                            mstore(add(mem, 0x4), 0x20)
-                            mstore(add(mem, 0x24), 0xc)
-                            mstore(add(mem, 0x44), "error result")
-                            revert(mem, 0x64)
+                            abi_encode_tuple_error(0xc, "error result")
                         }
                     }
                 }
@@ -523,14 +488,10 @@ object "Sudoku_Yul_Ex_Stor" {
                             revert_forward_1()
                         }
                     }
-                    let mem := mload(0x40)
-                    mstore(mem, hex"08c379a0")
-                    mstore(add(mem, 0x4), 0x20)
-                    mstore(add(mem, 0x24), 0xb)
-                    mstore(add(mem, 0x44), "error reset")
-                    revert(mem, 0x64)
+                    abi_encode_tuple_error(0xb, "error reset")
                 }
             }
+
 
             function cleanup_t_address(value) -> cleaned {
                 cleaned := cleanup_t_uint160(value)
@@ -585,18 +546,31 @@ object "Sudoku_Yul_Ex_Stor" {
                 }
             }
 
-            function panic_error_0x4e487b71(headStart, offset, argSize, errCode) {
+            function abi_encode_tuple_error(size, arg) {
+                let memPos := allocate_memory(0)
+                let offset := 0x04
+                let argSize := 0x20
+                let _41 := size
+                let _42 := arg // 0x6e756d62657220746f6f2068696768
+
+                let _43 := abi_encode_errormessage__fromStack(add(memPos, offset), argSize)
+                let _44 := abi_encode_errormessage__fromStack(_43, _41)
+                
+                require_error(memPos, _44, add(_44, argSize), _42)                           
+            }
+
+            function panic_error_4e487b71(headStart, offset, argSize, errCode) {
                 mstore(headStart, hex"4e487b71")
                 mstore(offset, errCode)
 
                 revert(headStart, argSize)
             }
 
-            function require_error(headStart, offset, argSize, errMessage) {
+            function require_error(headStart, offset, dataEnd, errMessage) {
                 mstore(headStart, hex"08c379a0")
                 mstore(offset, errMessage)
 
-                revert(headStart, sub(argSize, headStart))
+                revert(headStart, sub(dataEnd, headStart))
             }
 
             function revert_forward_1() {
