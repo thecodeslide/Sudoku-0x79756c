@@ -6,7 +6,7 @@ library SetSudokuLib {
 
   struct Set2 {
     bytes1[9]  values; 
-    // bytes1[9]  values2;
+    // bytes32 values2; TODO
   }
 
   error duplicateError(bytes1, bytes32 , bytes4);
@@ -44,7 +44,6 @@ library SetSudokuLib {
     }
   }
 
-  
   function reset(Set storage set, uint key) public {
     assembly {
       mstore(0, key)
